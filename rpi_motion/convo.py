@@ -25,7 +25,9 @@ def error(bot, update, error):
     logger.warning("Update %s caused error '%s'", update, error)
 
 def chatinfo(bot, update):
-    print("User: {update.effective_user.full_name} is in chat: {update.message.chat_id}".format(update=update))
+    msg = "User: {update.effective_user.full_name} is in chat: {update.message.chat_id}".format(update=update)
+    print(msg)
+    update.message.reply_text(msg)
 
 def snapshot(bot, update, cfg):
     try:
@@ -176,8 +178,8 @@ def setup(updater, cfg):
         CommandHandler('chatinfo', chatinfo)
     )
 
-def listen(cfg):
-    updater = Updater(cfg.token)
+def listen(cfg, user_sig_handler=None):
+    updater = Updater(cfg.token, user_sig_handler=user_sig_handler)
     setup(updater, cfg)
 
     updater.start_polling()

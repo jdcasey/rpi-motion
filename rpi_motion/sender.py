@@ -8,6 +8,16 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
+def hello(cfg):
+    bot = Bot(cfg.token)
+    for c in cfg.send_to_chats:
+        bot.set_chat_title(c, "{cfg.botname} is online".format(cfg=cfg))
+
+def goodbye(cfg, sig, frame):
+    bot = Bot(cfg.token)
+    for c in cfg.send_to_chats:
+        bot.set_chat_title(c, "{cfg.botname} is offline (SIG={sig})".format(cfg=cfg, sig=sig))
+
 def send(cfg, img):
     imagefile = join(cfg.image_dir, img)
     if not exists(imagefile):
