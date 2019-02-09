@@ -26,7 +26,7 @@ def error(bot, update, error):
 
 def chatinfo(bot, update):
     msg = "User: {update.effective_user.full_name} is in chat: {update.message.chat_id}".format(update=update)
-    print(msg)
+    logger.info(msg)
     update.message.reply_text(msg)
 
 def snapshot(bot, update, cfg):
@@ -115,7 +115,7 @@ def show_time(bot, update, user_data, cfg):
             if tstamp:
                 user_data['tstamp'] = tstamp
             else:
-                print("No timestamp selected")
+                update.message.reply_text("No timestamp selected")
                 return ConversationHandler.END
 
         if tstamp:
@@ -123,7 +123,7 @@ def show_time(bot, update, user_data, cfg):
             basepath = join(cfg.image_dir, dirname, tstamp)
             pic = None
             for f in [basepath, basepath + ".jpg", basepath + ".png"]:
-                print("{f} exists? {exists}".format(f=f, exists=exists(f)))
+                # print("{f} exists? {exists}".format(f=f, exists=exists(f)))
                 if exists(f):
                     pic = f
                     break
@@ -135,7 +135,7 @@ def show_time(bot, update, user_data, cfg):
             with open(pic, 'rb') as f:
                 bot.send_photo(update.message.chat_id, f)
         else:
-            print("No photo selected.")
+            update.message.reply_text("No photo selected.")
     except Exception as e:
         logger.warning("Failed to select image: {e}".format(e))
         update.message.reply_text("Something went wrong. Cannot select image.")
@@ -143,7 +143,7 @@ def show_time(bot, update, user_data, cfg):
     return ConversationHandler.END
 
 def done(bot, update):
-    print("END")
+    logger.debug("END")
     update.message.reply_text("DONE")
     return ConversationHandler.END
 
@@ -178,11 +178,10 @@ def setup(updater, cfg):
         CommandHandler('chatinfo', chatinfo)
     )
 
-def listen(cfg, hello_func, user_sig_handler=None):
+def listen(cfg, user_sig_handler=None):
     updater = Updater(cfg.token, user_sig_handler=user_sig_handler)
     setup(updater, cfg)
 
-    hello_func()
     updater.start_polling()
     updater.idle()
 

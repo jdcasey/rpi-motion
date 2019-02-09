@@ -10,13 +10,17 @@ logger = logging.getLogger(__name__)
 
 def hello(cfg):
     bot = Bot(cfg.token)
+    me = bot.get_me()
     for c in cfg.send_to_chats:
-        bot.sendMesage(c, "{cfg.botname} is online 🎉".format(cfg=cfg))
+        logger.info("Sending hello to {c}".format(c=c))
+        bot.sendMesage(c, "{me.full_name} is online 🎉".format(me=me))
 
 def goodbye(cfg, sig, frame):
     bot = Bot(cfg.token)
+    me = bot.get_me()
     for c in cfg.send_to_chats:
-        bot.sendMessage(c, "{cfg.botname} is offline 😴 (SIG={sig})".format(cfg=cfg, sig=sig))
+        logger.info("Sending goodbye to {c}".format(c=c))
+        bot.sendMessage(c, "{me.full_name} is offline 😴 (SIG={sig})".format(me=me, sig=sig))
 
 def send(cfg, img):
     imagefile = join(cfg.image_dir, img)
@@ -27,6 +31,6 @@ def send(cfg, img):
     else:
         bot = Bot(cfg.token)
         for c in cfg.send_to_chats:
-            print("Sending: {imagefile} to chat: {c}".format(imagefile=imagefile, c=c))
+            logger.info("Sending: {imagefile} to chat: {c}".format(imagefile=imagefile, c=c))
             with open(imagefile, 'rb') as f:
                 bot.send_photo(c, f)
