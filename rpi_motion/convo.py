@@ -178,10 +178,11 @@ def setup(updater, cfg):
         CommandHandler('chatinfo', chatinfo)
     )
 
-def listen(cfg, user_sig_handler=None):
+def listen(cfg, hello_func, user_sig_handler=None):
     updater = Updater(cfg.token, user_sig_handler=user_sig_handler)
     setup(updater, cfg)
 
+    hello_func()
     updater.start_polling()
     updater.idle()
 
