@@ -13,14 +13,14 @@ def hello(cfg):
     me = bot.get_me()
     for c in cfg.send_to_chats:
         logger.info("Sending hello to {c}".format(c=c))
-        bot.sendMesage(c, "{me.full_name} is online 🎉".format(me=me))
+        bot.send_message(c, "{me.full_name} is online 🎉".format(me=me))
 
 def goodbye(cfg, sig, frame):
     bot = Bot(cfg.token)
     me = bot.get_me()
     for c in cfg.send_to_chats:
         logger.info("Sending goodbye to {c}".format(c=c))
-        bot.sendMessage(c, "{me.full_name} is offline 😴 (SIG={sig})".format(me=me, sig=sig))
+        bot.send_message(c, "{me.full_name} is offline 😴 (SIG={sig})".format(me=me, sig=sig))
 
 def send(cfg, img):
     imagefile = join(cfg.image_dir, img)
