@@ -25,7 +25,7 @@ def error(bot, update, error):
     logger.warning("Update %s caused error '%s'", update, error)
 
 def chatinfo(bot, update):
-    print(f"User: {update.effective_user.full_name} is in chat: {update.message.chat_id}")
+    print("User: {update.effective_user.full_name} is in chat: {update.message.chat_id}".format(update=update))
 
 def snapshot(bot, update, cfg):
     try:
@@ -35,7 +35,7 @@ def snapshot(bot, update, cfg):
         else:
             update.message.reply_text("Cannot take snapshot!")
     except Exception as e:
-        logger.warning(f"Failed to take snapshot: {e}")
+        logger.warning("Failed to take snapshot: {e}".format(e=e))
         update.message.reply_text("Something went wrong. Cannot take snapshot")
 
 def list_all(bot, update, args, user_data, cfg):
@@ -67,7 +67,7 @@ def list_all(bot, update, args, user_data, cfg):
             else:
                 return list_date(bot, update, user_data, cfg)
     except Exception as e:
-        logger.warning(f"Failed to list image dates: {e}")
+        logger.warning("Failed to list image dates: {e}".format(e=e))
         update.message.reply_text("Something went wrong. Cannot list image dates.")
 
     return ConversationHandler.END
@@ -87,7 +87,7 @@ def list_date(bot, update, user_data, cfg):
         dirpath = join(cfg.image_dir, dirname)
         files = listdir(dirpath) if isdir(dirpath) else []
         if len(files) < 1:
-            update.message.reply_text(f"No images found for {dirname}")
+            update.message.reply_text("No images found for {dirname}".format(dirname=dirname))
             return ConversationHandler.END
 
         for f in files:
@@ -100,7 +100,7 @@ def list_date(bot, update, user_data, cfg):
 
         return SELECT_TIME
     except Exception as e:
-        logger.warning(f"Failed to list images: {e}")
+        logger.warning("Failed to list images: {e}".format(e=e))
         update.message.reply_text("Something went wrong. Cannot list images.")
 
     return ConversationHandler.END
@@ -121,7 +121,7 @@ def show_time(bot, update, user_data, cfg):
             basepath = join(cfg.image_dir, dirname, tstamp)
             pic = None
             for f in [basepath, basepath + ".jpg", basepath + ".png"]:
-                print(f"{f} exists? {exists(f)}")
+                print("{f} exists? {exists}".format(f=f, exists=exists(f)))
                 if exists(f):
                     pic = f
                     break
@@ -135,7 +135,7 @@ def show_time(bot, update, user_data, cfg):
         else:
             print("No photo selected.")
     except Exception as e:
-        logger.warning(f"Failed to select image: {e}")
+        logger.warning("Failed to select image: {e}".format(e))
         update.message.reply_text("Something went wrong. Cannot select image.")
 
     return ConversationHandler.END

@@ -18,6 +18,6 @@ def take_snapshot(cfg):
         logger.info("Saving snapshot.")
         return True
     else:
-        logger.warning(f"Cannot save snapshot. Response was: {r.status_code}")
+        logger.warning("Cannot save snapshot. Response was: {r.status_code}".format(r=r))
 
     return False
